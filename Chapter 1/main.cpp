@@ -41,19 +41,19 @@ using namespace std;
 // }
 
 /////////////////////// Webcam ///////////////////////
-int main() {
+// int main() {
 
-    VideoCapture cap(0); //If only one camera, camera ID 0 is fine
-    Mat img;
+//     VideoCapture cap(0); //If only one camera, camera ID 0 is fine
+//     Mat img;
 
-    while(true) {
-        cap.read(img);
-        if (!img.data) {
-            break;
-        }
-        namedWindow("Display Image", WINDOW_AUTOSIZE );
-        imshow("Display Image", img);
-        waitKey(1);
-    }
-    return 0;
-}
+//     while(true) {
+//         cap.read(img);
+//         if (!img.data) {
+//             break;
+//         }
+//         namedWindow("Display Image", WINDOW_AUTOSIZE );
+//         imshow("Display Image", img);
+//         waitKey(1);
+//     }
+//     return 0;
+// }

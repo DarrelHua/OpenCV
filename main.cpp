@@ -6,54 +6,36 @@
 using namespace cv;
 using namespace std;
 
-/////////////////////// Images ///////////////////////
-// int main() {
-//     Mat img;
-//     img = imread("C:/Users/darre/Pictures/lenna.png");
-//     if ( !img.data )
-//     {
-//         printf("No image data \n");
-//         return -1;
-//     }
-//     namedWindow("Display Image", WINDOW_AUTOSIZE );
-//     imshow("Display Image", img);
-//     waitKey(0);
-//     return 0;
-// }
+/////////////////////// Basic Functions ///////////////////////
 
-/////////////////////// Video ///////////////////////
-// int main() {
-
-//     string path = "C:/Users/darre/Downloads/Resources//Resources/test_video.mp4";
-//     VideoCapture cap(path);
-//     Mat img;
-
-//     while(true) {
-//         cap.read(img);
-//         if (!img.data) {
-//             break;
-//         }
-//         namedWindow("Display Image", WINDOW_AUTOSIZE );
-//         imshow("Display Image", img);
-//         waitKey(1);
-//     }
-//     return 0;
-// }
-
-/////////////////////// Webcam ///////////////////////
 int main() {
-
-    VideoCapture cap(0); //If only one camera, camera ID 0 is fine
     Mat img;
+    img = imread("C:/Users/darre/Pictures/lenna.png");
 
-    while(true) {
-        cap.read(img);
-        if (!img.data) {
-            break;
-        }
-        namedWindow("Display Image", WINDOW_AUTOSIZE );
-        imshow("Display Image", img);
-        waitKey(1);
+    Mat imgGray;
+    Mat imgBlur, imgCanny, imgDia, imgErode;
+    if ( !img.data )
+    {
+        printf("No image data \n");
+        return -1;
     }
+
+    cvtColor(img,imgGray,COLOR_BGRA2GRAY);
+    GaussianBlur(img,imgBlur,Size(9,9),5,0);
+    Canny(imgBlur,imgCanny,25,75);
+
+    Mat kernel = getStructuringElement(MORPH_RECT,Size(5,5));
+    dilate(imgCanny,imgDia,kernel);
+    erode(imgDia,imgErode,kernel);
+
+    imshow("Image",img);
+    imshow("Image Gray", imgGray);
+    imshow("Bluured Image",imgBlur);
+    imshow("Canny Image", imgCanny);
+    imshow("Dilated Image",imgDia);
+    imshow("Dilated Image",imgErode);
+    waitKey(0);
     return 0;
 }
+
+
