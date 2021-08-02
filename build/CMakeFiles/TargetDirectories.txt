@@ -1,0 +1,9 @@
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/Experimental.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/Continuous.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/Nightly.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/OpenCV.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/PACKAGE.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/darre/Documents/GitHub/OpenCV/build/CMakeFiles/ZERO_CHECK.dir
