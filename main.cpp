@@ -6,34 +6,28 @@
 using namespace cv;
 using namespace std;
 
-/////////////////////// Basic Functions ///////////////////////
+/////////////////////// Resize and Crop ///////////////////////
 
 int main() {
-    Mat img;
+    Mat img, imgCrop;
     img = imread("C:/Users/darre/Pictures/lenna.png");
 
-    Mat imgGray;
-    Mat imgBlur, imgCanny, imgDia, imgErode;
     if ( !img.data )
     {
         printf("No image data \n");
         return -1;
     }
+    Mat imgResized;
 
-    cvtColor(img,imgGray,COLOR_BGRA2GRAY);
-    GaussianBlur(img,imgBlur,Size(9,9),5,0);
-    Canny(imgBlur,imgCanny,25,75);
+    cout << img.size() << endl;
+    resize(img,imgResized,Size(),0.5,0.5);
 
-    Mat kernel = getStructuringElement(MORPH_RECT,Size(5,5));
-    dilate(imgCanny,imgDia,kernel);
-    erode(imgDia,imgErode,kernel);
+    Rect roi(100,100,300,250); //ROI: Region of Interest
+    imgCrop = img(roi);
 
     imshow("Image",img);
-    imshow("Image Gray", imgGray);
-    imshow("Bluured Image",imgBlur);
-    imshow("Canny Image", imgCanny);
-    imshow("Dilated Image",imgDia);
-    imshow("Dilated Image",imgErode);
+    imshow("Resized",imgResized);
+    imshow("Cropped",imgCrop);
     waitKey(0);
     return 0;
 }
