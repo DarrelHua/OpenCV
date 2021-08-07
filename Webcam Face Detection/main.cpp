@@ -9,8 +9,6 @@
 using namespace cv;
 using namespace std;
 
-// This current implementation provides around 4.5 FPS, looking to improve this through optimization techniques and CUDA
-
 /////////////////////// Face Detection Webcam///////////////////////
 int main() {
 
