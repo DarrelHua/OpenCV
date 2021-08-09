@@ -10,14 +10,27 @@ using namespace cv;
 using namespace std;
 
 // This current implementation provides around 4.5 FPS, looking to improve this through optimization techniques and CUDA
+//CascadeClassifier face_cascade;
+///////////////////// Face Detection Webcam///////////////////////
+CascadeClassifier faceCascade;
+void faceDetection(Mat img) {
+    vector<Rect> faces;
+    Mat grey_img;
 
-/////////////////////// Face Detection Webcam///////////////////////
+    cvtColor(img,grey_img,COLOR_BGR2GRAY);
+    faceCascade.detectMultiScale(img,faces,1.1,10);
+    
+    for(int i = 0;i<faces.size();i++) {
+        rectangle(img,faces[i].tl(),faces[i].br(),Scalar(255,0,255),3);
+    }
+    imshow("Greyscale Detection",grey_img);
+}
 int main() {
 
     VideoCapture cap(0); //If only one camera, camera ID 0 is fine
     Mat img;
 
-    CascadeClassifier faceCascade;
+    
     faceCascade.load("C:/Users/darre/Downloads/Resources/Resources/haarcascade_frontalface_default.xml");
 
     if(faceCascade.empty()) {
@@ -31,30 +44,55 @@ int main() {
     double secElapsed;
     double curFPS;
 
-    while(true) {
-        cap.read(img);
-        if (!img.data) {
+    while(cap.read(img)) {
+        
+        if (img.empty()) {
             cout << "No image data" << endl;
             break;
         }
         vector<Rect> faces;
-        faceCascade.detectMultiScale(img,faces,1.1,10);
-        //double fps = cap.get(CAP_PROP_FPS);
+        Mat grey_img;
+    
+        cvtColor(img,grey_img,COLOR_BGR2GRAY);
+        faceCascade.detectMultiScale(grey_img,faces,1.1,10); //Detection on gray scale is less intensive computationally
+    
         for(int i = 0;i<faces.size();i++) {
             rectangle(img,faces[i].tl(),faces[i].br(),Scalar(255,0,255),3);
         }
-        //cout << "FPS: " << fps << endl;
-        imshow("Display Image", img);
+        imshow("Detector",img);
+
         numFramesCaptured++;
         time(&curTime);
         double secElapsed = difftime(curTime,startTime);
         double curFPS = numFramesCaptured/secElapsed;
         cout << "FPS: " << curFPS << endl;
-        waitKey(1);
+        if (waitKey(10) == 'q')
+        {
+            break; // Terminate program if q pressed
+        }
     }
     cap.release();
     return 0;
 }
+
+
+
+// int main() {
+
+//     VideoCapture cap(0); //If only one camera, camera ID 0 is fine
+//     Mat img;
+
+//     while(true) {
+//         cap.read(img);
+//         if (!img.data) {
+//             break;
+//         }
+//         namedWindow("Display Image", WINDOW_AUTOSIZE );
+//         imshow("Display Image", img);
+//         waitKey(1);
+//     }
+//     return 0;
+// }
 
 
 
