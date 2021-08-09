@@ -57,45 +57,27 @@ int main() {
         cvtColor(img,grey_img,COLOR_BGR2GRAY);
         faceCascade.detectMultiScale(grey_img,faces,1.1,10); //Detection on gray scale is less intensive computationally
     
-        
-
         numFramesCaptured++;
         time(&curTime);
         double secElapsed = difftime(curTime,startTime);
         double curFPS = numFramesCaptured/secElapsed;
-        //cout << "FPS: " << curFPS << endl;
+        
         for(int i = 0;i<faces.size();i++) {
             rectangle(img,faces[i].tl(),faces[i].br(),Scalar(255,0,255),3);
             putText(img,"FPS: " + to_string(curFPS),Point(faces[i].x,faces[i].y-10),FONT_HERSHEY_PLAIN,0.7,Scalar(255,0,0),1);
         }
         imshow("Detector",img);
+
         if (waitKey(10) == 'q')
         {
             break; // Terminate program if q pressed
         }
     }
     cap.release();
+    destroyAllWindows();
     return 0;
 }
 
-
-
-// int main() {
-
-//     VideoCapture cap(0); //If only one camera, camera ID 0 is fine
-//     Mat img;
-
-//     while(true) {
-//         cap.read(img);
-//         if (!img.data) {
-//             break;
-//         }
-//         namedWindow("Display Image", WINDOW_AUTOSIZE );
-//         imshow("Display Image", img);
-//         waitKey(1);
-//     }
-//     return 0;
-// }
 
 
 
