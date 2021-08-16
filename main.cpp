@@ -37,13 +37,16 @@ int main() {
         cout << "XML not found" << endl;
         return -1;
     }
+
     time_t startTime;
     time_t curTime;
     time(&startTime);
     int numFramesCaptured = 0;
     double secElapsed;
     double curFPS;
+    
     Mat resized;
+
     while(cap.read(img)) {
         
         if (img.empty()) {
