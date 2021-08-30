@@ -1,0 +1,9 @@
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/Experimental.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/Continuous.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/Nightly.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/DNNfaceDetection.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/PACKAGE.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/darre/Documents/GitHub/OpenCV/Object Detection/DNNfaceDetection/build/CMakeFiles/ZERO_CHECK.dir

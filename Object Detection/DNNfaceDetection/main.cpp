@@ -25,7 +25,7 @@ int main(int, char**) {
     
 
     // Read in the neural network from the files
-    Net net = readNetFromTensorflow(file_path + "frozen_inference_graph.pb");
+    Net net = readNet(file_path + "frozen_inference_graph.pb",file_path + "ssd_mobilenet_v2_coco_2018_03_29.pbtxt","Tensorflow");
  
 
     // Open up the webcam
@@ -33,8 +33,8 @@ int main(int, char**) {
  
 
     // Run on either CPU or GPU
-    //net.setPreferableBackend(DNN_BACKEND_CUDA);
-    //net.setPreferableTarget(DNN_TARGET_CUDA);
+    net.setPreferableBackend(DNN_BACKEND_CUDA);
+    net.setPreferableTarget(DNN_TARGET_CUDA);
 
 
     // Set a min confidence score for the detections

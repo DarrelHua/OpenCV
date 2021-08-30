@@ -3,81 +3,66 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/objdetect.hpp>
+#include <opencv2/dnn.hpp>
+#include <opencv2/dnn/all_layers.hpp>
+#include <fstream>
 #include <time.h>
 
 //xml files have our trained models
 using namespace cv;
 using namespace std;
+using namespace dnn;
 
 // This current implementation provides around 4.5 FPS, looking to improve this through optimization techniques and CUDA
 //CascadeClassifier face_cascade;
 ///////////////////// Face Detection Webcam///////////////////////
 CascadeClassifier faceCascade;
-void faceDetection(Mat img) {
-    vector<Rect> faces;
-    Mat grey_img;
 
-    cvtColor(img,grey_img,COLOR_BGR2GRAY);
-    faceCascade.detectMultiScale(img,faces,1.1,10);
-    
-    for(int i = 0;i<faces.size();i++) {
-        rectangle(img,faces[i].tl(),faces[i].br(),Scalar(255,0,255),3);
-    }
-    imshow("Greyscale Detection",grey_img);
-}
+string filepath = "C:/Users/darre/Documents/GitHub/OpenCV/";
+
 int main() {
-
-    VideoCapture cap(0); //If only one camera, camera ID 0 is fine
-    Mat img;
-
-    
-    faceCascade.load("C:/Users/darre/Downloads/Resources/Resources/haarcascade_frontalface_default.xml");
-
-    if(faceCascade.empty()) {
-        cout << "XML not found" << endl;
-        return -1;
+    std::vector<std::string> class_names;
+    ifstream ifs(string(filepath + "object_detection_classes_coco.txt").c_str());
+    string line;
+    while (getline(ifs, line))
+    {
+        class_names.push_back(line);
     }
 
-    time_t startTime;
-    time_t curTime;
-    time(&startTime);
-    int numFramesCaptured = 0;
-    double secElapsed;
-    double curFPS;
-    
-    Mat resized;
 
-    while(cap.read(img)) {
-        
-        if (img.empty()) {
-            cout << "No image data" << endl;
-            break;
-        }
-        vector<Rect> faces;
-        //resize(img,resized,Size(640,480));
-        Mat grey_img;
+    auto model = readNet(filepath + "frozen_inference_graph.pb",filepath + "ssd_mobilenet_v2_coco_2018_03_29.pbtxt","TensorFlow");
 
-        cvtColor(img,grey_img,COLOR_BGR2GRAY);
-        faceCascade.detectMultiScale(grey_img,faces,1.1,10); //Detection on gray scale is less intensive computationally
-    
-        numFramesCaptured++;
-        time(&curTime);
-        double secElapsed = difftime(curTime,startTime);
-        double curFPS = numFramesCaptured/secElapsed;
-        
-        for(int i = 0;i<faces.size();i++) {
-            rectangle(img,faces[i].tl(),faces[i].br(),Scalar(255,0,255),3);
-            putText(img,"FPS: " + to_string(curFPS),Point(faces[i].x,faces[i].y-10),FONT_HERSHEY_PLAIN,0.7,Scalar(255,0,0),1);
-        }
-        imshow("Detector",img);
+    // read the image from disk
+    Mat image = imread(filepath + "Resoruces/vehicle-traffic-object-detection-test-image.jpg");
+    int image_height = image.cols;
+    int image_width = image.rows;
+    //create blob from image
+    Mat blob = blobFromImage(image, 1.0, Size(300, 300), Scalar(127.5, 127.5, 127.5),true, false);
+    //create blob from image
+    model.setInput(blob);
+    //forward pass through the model to carry out the detection
+    Mat output = model.forward();
+    Mat detectionMat(output.size[2], output.size[3], CV_32F, output.ptr<float>());
 
-        if (waitKey(10) == 'q')
-        {
-            break; // Terminate program if q pressed
-        }
-    }
-    cap.release();
-    destroyAllWindows();
+    for (int i = 0; i < detectionMat.rows; i++){
+       int class_id = detectionMat.at<float>(i, 1);
+       float confidence = detectionMat.at<float>(i, 2);
+      
+       // Check if the detection is of good quality
+       if (confidence > 0.4){
+           int box_x = static_cast<int>(detectionMat.at<float>(i, 3) * image.cols);
+           int box_y = static_cast<int>(detectionMat.at<float>(i, 4) * image.rows);
+           int box_width = static_cast<int>(detectionMat.at<float>(i, 5) * image.cols - box_x);
+           int box_height = static_cast<int>(detectionMat.at<float>(i, 6) * image.rows - box_y);
+           rectangle(image, Point(box_x, box_y), Point(box_x+box_width, box_y+box_height), Scalar(255,255,255), 2);
+           putText(image, class_names[class_id-1].c_str(), Point(box_x, box_y-5), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0,255,255), 1);
+       }
+   }   
+ 
+   imshow("image", image);
+   imwrite("image_result.jpg", image);
+   waitKey(0);
+   destroyAllWindows();
     return 0;
 }
 
